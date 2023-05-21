@@ -28,7 +28,7 @@ app.use('/api/user', userRouter);
 app.use(express.static('build'));
 
 // App Set //
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5019;
 
 /** Listen * */
 app.listen(PORT, () => {
