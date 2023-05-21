@@ -15,14 +15,14 @@ function UserPage() {
 
   return (
     <div className="container">
-      <h2>Overview</h2>
-      <div id='home-buttons' style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <h2 style={{ marginBottom: '50px' }}>Overview</h2>
+      <div id='home-buttons' style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '50px' }}>
         <Button variant='outlined'>New Property</Button>
         <Button variant='outlined'>New Task</Button>
         <Button variant='outlined'>Assign Tasks</Button>
       </div>
       <div id='open-tasks'>
-        <h2>Open Tasks</h2>
+        <h2 style={{ marginBottom: '50px' }}>Open Tasks</h2>
         <Grid container spacing={2}>
           <Grid xs={3}>
             <Card>

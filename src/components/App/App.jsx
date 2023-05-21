@@ -37,7 +37,7 @@ function App() {
     <Router>
       <div>
         <Nav />
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" className='main-container'>
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
