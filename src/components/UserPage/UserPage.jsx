@@ -12,16 +12,6 @@ import Typography from '@mui/material/Typography';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
-  const user = useSelector((store) => store.user);
-
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    height: '150px'
-  }));
 
   return (
     <div className="container">
@@ -35,75 +25,123 @@ function UserPage() {
         <h2>Open Tasks</h2>
         <Grid container spacing={2}>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
           <Grid xs={3}>
-            <Card sx={{ width: 250, height: 150 }}>
+            <Card>
               <CardContent>
-                <Typography>
+                <Typography variant='h5'>
                   123 Main St
                 </Typography>
+                <Typography>
+                  Tasks: 2
+                </Typography>
               </CardContent>
+              <CardActions>
+                <Button>Details</Button>
+              </CardActions>
             </Card>
           </Grid>
         </Grid>
