@@ -11,6 +11,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import useReduxStore from '../../hooks/useReduxStore';
 import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
@@ -32,24 +33,25 @@ function UserPage() {
       <div id='open-tasks'>
         <h2 style={{ marginBottom: '50px' }}>Open Tasks</h2>
         <Grid container spacing={2}>
-          {/* {
-            store.propertyTasks.map()
-          } */}
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          {
+            store.propertyTasks.map(property => (
+              <Grid xs={3}>
+                <Card>
+                  <CardContent>
+                    <Typography variant='h5'>
+                      {property.street}
+                    </Typography>
+                    <Typography>
+                      {property.Tasks} open tasks
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button>Details</Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+          }
         </Grid>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { response } from 'express';
 
 // properties Saga: will be loaded when user logs in 
 
