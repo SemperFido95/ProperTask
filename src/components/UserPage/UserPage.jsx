@@ -32,9 +32,9 @@ function UserPage() {
       <div id='open-tasks'>
         <h2 style={{ marginBottom: '50px' }}>Open Tasks</h2>
         <Grid container spacing={2}>
-          {
+          {/* {
             store.propertyTasks.map()
-          }
+          } */}
           <Grid xs={3}>
             <Card>
               <CardContent>
