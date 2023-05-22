@@ -110,3 +110,11 @@ input {
   margin: 5px;
   margin-bottom: 10px;
 }
+
+h2 {
+  text-align: center;
+}
+
+.main-container {
+  height: calc(100vh - 120px - 96.5px - 19.5px);
+}
