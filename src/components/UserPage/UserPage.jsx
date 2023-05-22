@@ -42,7 +42,7 @@ function UserPage() {
                       {property.street}
                     </Typography>
                     <Typography>
-                      {property.Tasks} open tasks
+                      {property.Tasks} {parseInt(property.Tasks) === 1 ? 'open task' : 'open tasks'}
                     </Typography>
                   </CardContent>
                   <CardActions>
