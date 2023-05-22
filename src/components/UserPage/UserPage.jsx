@@ -1,6 +1,6 @@
 import React from 'react';
 import LogOutButton from '../LogOutButton/LogOutButton';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
@@ -9,9 +9,17 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import useReduxStore from '../../hooks/useReduxStore';
+import { useDispatch } from 'react-redux';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
+  const store = useReduxStore();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_PROPERTY_TASKS' });
+  }, [dispatch]);
 
   return (
     <div className="container">
@@ -24,111 +32,9 @@ function UserPage() {
       <div id='open-tasks'>
         <h2 style={{ marginBottom: '50px' }}>Open Tasks</h2>
         <Grid container spacing={2}>
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid xs={3}>
-            <Card>
-              <CardContent>
-                <Typography variant='h5'>
-                  123 Main St
-                </Typography>
-                <Typography>
-                  Tasks: 2
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button>Details</Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          {
+            store.propertyTasks.map()
+          }
           <Grid xs={3}>
             <Card>
               <CardContent>
