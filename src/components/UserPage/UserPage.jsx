@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -15,12 +15,17 @@ import { useEffect } from 'react';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
+  const [id, setId] = useState('');
   const store = useReduxStore();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({ type: 'FETCH_PROPERTY_TASKS' });
   }, [dispatch]);
+
+  const viewDetails = propertyId => {
+    
+  }
 
   return (
     <div className="container">
@@ -36,7 +41,7 @@ function UserPage() {
           {
             store.propertyTasks.map(property => (
               <Grid xs={3}>
-                <Card>
+                <Card key={property.id}>
                   <CardContent>
                     <Typography variant='h5'>
                       {property.street}
@@ -46,7 +51,7 @@ function UserPage() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button>Details</Button>
+                    <Button onClick={() => viewDetails(property.id)}>Details</Button>
                   </CardActions>
                 </Card>
               </Grid>
