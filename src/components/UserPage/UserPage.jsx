@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
   const [id, setId] = useState('');
+  const [open, setOpen] = React.useState(false);
   const store = useReduxStore();
   const dispatch = useDispatch();
 
@@ -23,8 +24,21 @@ function UserPage() {
     dispatch({ type: 'FETCH_PROPERTY_TASKS' });
   }, [dispatch]);
 
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
   const viewDetails = propertyId => {
-    
+    dispatch({ type: 'GET_PROPERTY_DETAILS', id: propertyId });
+    setOpen(true);
   }
 
   return (
@@ -40,8 +54,8 @@ function UserPage() {
         <Grid container spacing={2}>
           {
             store.propertyTasks.map(property => (
-              <Grid xs={3}>
-                <Card key={property.id}>
+              <Grid key={property.id} xs={3}>
+                <Card>
                   <CardContent>
                     <Typography variant='h5'>
                       {property.street}
@@ -58,6 +72,21 @@ function UserPage() {
             ))
           }
         </Grid>
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Text in a modal
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </Typography>
+          </Box>
+        </Modal>
       </div>
     </div>
   );
