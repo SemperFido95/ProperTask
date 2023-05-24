@@ -8,6 +8,9 @@ function PropretyModal() {
     // a default value of 'Functional Component'
     const store = useSelector((store) => store);
     const dispatch = useDispatch();
+    const info = Object.keys(store.propertyDetails).length === 0 ? '' : store.propertyDetails.info[0];
+    const tasks = Object.keys(store.propertyDetails).length === 0 ? [''] : store.propertyDetails.tasks;
+
 
     const style = {
         position: 'absolute',
@@ -30,26 +33,19 @@ function PropretyModal() {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2" style={{ textAlign: 'left' }} >
-                    {Object.keys(store.propertyDetails).length === 0 ? '' : store.propertyDetails.info[0].street}
+                    {info.street}
                 </Typography>
                 <Typography id="modal-modal-description">
-                    {Object.keys(store.propertyDetails).length === 0 ? ''
-
-                        :
-
-                        `${store.propertyDetails.info[0].city}, 
-                        ${store.propertyDetails.info[0].state}, 
-                        ${store.propertyDetails.info[0].zip}`
-                    }
+                    {`${info.city}, ${info.state}, ${info.zip}`}
                 </Typography>
                 <h5>Tasks:</h5>
-                {/* <Typography>
                     <ul>
                         {
-
+                            tasks.map(task => (
+                                <li key={task.id}>{task.task}</li>
+                            ))
                         }
                     </ul>
-                </Typography> */}
             </Box>
         </Modal>
     );
