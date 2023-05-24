@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -12,15 +12,25 @@ import Typography from '@mui/material/Typography';
 import useReduxStore from '../../hooks/useReduxStore';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import PropertyModal from '../PropertyModal/PropertyModal';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
+  const [id, setId] = useState('');
+  const [open, setOpen] = React.useState(false);
   const store = useReduxStore();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({ type: 'FETCH_PROPERTY_TASKS' });
   }, [dispatch]);
+
+
+
+  const viewDetails = propertyId => {
+    dispatch({ type: 'GET_PROPERTY_DETAILS', id: propertyId });
+    dispatch({ type: 'SET_OPEN', payload: true });
+  }
 
   return (
     <div className="container">
@@ -35,7 +45,7 @@ function UserPage() {
         <Grid container spacing={2}>
           {
             store.propertyTasks.map(property => (
-              <Grid xs={3}>
+              <Grid key={property.id} xs={3}>
                 <Card>
                   <CardContent>
                     <Typography variant='h5'>
@@ -46,13 +56,16 @@ function UserPage() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button>Details</Button>
+                    <Button onClick={() => viewDetails(property.id)}>Details</Button>
                   </CardActions>
                 </Card>
               </Grid>
             ))
           }
         </Grid>
+        <PropertyModal 
+          
+        />
       </div>
     </div>
   );
