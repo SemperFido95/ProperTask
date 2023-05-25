@@ -14,6 +14,8 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import PropertyModal from '../PropertyModal/PropertyModal';
 import NewPropertyModal from '../NewPropertyModal/NewPropertyModal';
+import NewTaskModal from '../NewTaskModal/NewTaskModal';
+import AssignTaskModal from '../AssignTaskModal/AssignTaskModal';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
@@ -28,10 +30,6 @@ function UserPage() {
   useEffect(() => {
     dispatch({ type: 'FETCH_PROPERTY_TASKS' });
   }, [dispatch]);
-
-  const newPropertyModal = () => {
-    setNewPropertyOpen(true);
-  }
 
   const viewDetails = propertyId => {
     dispatch({ type: 'GET_PROPERTY_DETAILS', id: propertyId });
@@ -54,9 +52,9 @@ function UserPage() {
     <div className="container">
       <h2 style={{ marginBottom: '50px' }}>Overview</h2>
       <div id='home-buttons' style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '50px' }}>
-        <Button variant='outlined' onClick={() => newPropertyModal()}>New Property</Button>
-        <Button variant='outlined'>New Task</Button>
-        <Button variant='outlined'>Assign Tasks</Button>
+        <Button variant='outlined' onClick={() => setNewPropertyOpen(true)}>New Property</Button>
+        <Button variant='outlined' onClick={() => setNewTaskOpen(true)}>New Task</Button>
+        <Button variant='outlined' onClick={() => setAssignTaskOpen(true)}>Assign Tasks</Button>
       </div>
       <div id='open-tasks'>
         <h2 style={{ marginBottom: '50px' }}>Open Tasks</h2>
@@ -89,6 +87,16 @@ function UserPage() {
         <NewPropertyModal 
           open={newPropertyOpen}
           setOpen={setNewPropertyOpen}
+          style={style}
+        />
+        <NewTaskModal 
+          open={newTaskOpen}
+          setOpen={setNewTaskOpen}
+          style={style}
+        />
+        <AssignTaskModal 
+          open={assignTaskOpen}
+          setOpen={setAssignTaskOpen}
           style={style}
         />
       </div>

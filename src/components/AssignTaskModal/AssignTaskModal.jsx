@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { Modal, Typography, Box } from '@mui/material';
 import axios from "axios";
 
-function NewPropertyModal({ open, setOpen, style }) {
+function AssignTaskModal({ open, setOpen, style }) {
     const dispatch = useDispatch();
 
     const handleClose = () => {
@@ -20,16 +20,14 @@ function NewPropertyModal({ open, setOpen, style }) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2" style={{ textAlign: 'left' }} >
-                    New Property:
+                    Assign Task:
                 </Typography>
                 <Typography id="modal-modal-description">
-
                 </Typography>
                 <h5></h5>
-
             </Box>
         </Modal>
     )
 }
 
-export default NewPropertyModal;
+export default AssignTaskModal;
