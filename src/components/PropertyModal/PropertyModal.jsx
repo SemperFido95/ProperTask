@@ -15,6 +15,7 @@ function PropretyModal() {
     const handleClose = () => {
         dispatch({ type: 'SET_OPEN', payload: false });
         dispatch({ type: 'CLEAR_PROPERTY_DETAILS' });
+        dispatch({ type: 'FETCH_PROPERTY_TASKS' });
     }
 
     const markComplete = (event, propertyId) => {

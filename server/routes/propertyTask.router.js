@@ -11,7 +11,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
         JOIN property_tasks pt on p.id = pt.property_id
         JOIN tasks t on pt.task_id = t.id
         WHERE p.user_id = $1
-        GROUP BY p.id;
+            AND pt.complete = false
+        GROUP BY p.id
+        ORDER BY "Tasks" DESC;
     `;
     pool.query(queryText, [req.user.id]).then(result => {
         console.log('Get request for property_tasks')
