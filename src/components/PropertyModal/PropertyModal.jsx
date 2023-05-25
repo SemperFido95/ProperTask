@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 function PropretyModal() {
     // Using hooks we're creating local state for a "heading" variable with
@@ -11,6 +12,24 @@ function PropretyModal() {
     const info = Object.keys(store.propertyDetails).length === 0 ? '' : store.propertyDetails.info[0];
     const tasks = Object.keys(store.propertyDetails).length === 0 ? [''] : store.propertyDetails.tasks;
 
+    const handleClose = () => {
+        dispatch({ type: 'SET_OPEN', payload: false });
+        dispatch({ type: 'CLEAR_PROPERTY_DETAILS' });
+    }
+
+    const markComplete = (event, propertyId) => {
+        let status = event.target.checked;
+        let id = Number(event.target.id);
+        let completeObject = {};
+        status === true ? completeObject.complete = true : completeObject.complete = false;
+        axios.put(`/api/properties/${id}`, completeObject).then((response) => {
+            console.log(response);
+            dispatch({ type: 'GET_PROPERTY_DETAILS', id: propertyId });
+        }).catch((error) => {
+            console.log(`Error in PUT ${error}`);
+            alert('Something went wrong');
+        })
+    }
 
     const style = {
         position: 'absolute',
@@ -27,7 +46,7 @@ function PropretyModal() {
     return (
         <Modal
             open={store.modalReducer}
-            onClose={() => dispatch({ type: 'SET_OPEN', payload: false })}
+            onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
@@ -39,13 +58,17 @@ function PropretyModal() {
                     {`${info.city}, ${info.state}, ${info.zip}`}
                 </Typography>
                 <h5>Tasks:</h5>
-                    <ul>
-                        {
-                            tasks.map(task => (
-                                <li key={task.id}>{task.task}</li>
-                            ))
-                        }
-                    </ul>
+                <ul>
+                    {
+                        tasks.map(task => (
+                            <li key={task.id}>
+                                <input id={task.id} type="checkbox" defaultChecked={task.complete} onChange={(event) => markComplete(event, info.id)} />
+                                {task.task}
+
+                            </li>
+                        ))
+                    }
+                </ul>
             </Box>
         </Modal>
     );
