@@ -13,11 +13,15 @@ import useReduxStore from '../../hooks/useReduxStore';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import PropertyModal from '../PropertyModal/PropertyModal';
+import NewPropertyModal from '../NewPropertyModal/NewPropertyModal';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
   const [id, setId] = useState('');
-  const [open, setOpen] = React.useState(false);
+  const [propertyOpen, setPropertyOpen] = useState(false);
+  const [newPropertyOpen, setNewPropertyOpen] = useState(false);
+  const [newTaskOpen, setNewTaskOpen] = useState(false);
+  const [assignTaskOpen, setAssignTaskOpen] = useState(false);
   const store = useReduxStore();
   const dispatch = useDispatch();
 
@@ -25,18 +29,32 @@ function UserPage() {
     dispatch({ type: 'FETCH_PROPERTY_TASKS' });
   }, [dispatch]);
 
-
+  const newPropertyModal = () => {
+    setNewPropertyOpen(true);
+  }
 
   const viewDetails = propertyId => {
     dispatch({ type: 'GET_PROPERTY_DETAILS', id: propertyId });
-    dispatch({ type: 'SET_OPEN', payload: true });
+    setPropertyOpen(true);
   }
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
   return (
     <div className="container">
       <h2 style={{ marginBottom: '50px' }}>Overview</h2>
       <div id='home-buttons' style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '50px' }}>
-        <Button variant='outlined'>New Property</Button>
+        <Button variant='outlined' onClick={() => newPropertyModal()}>New Property</Button>
         <Button variant='outlined'>New Task</Button>
         <Button variant='outlined'>Assign Tasks</Button>
       </div>
@@ -64,7 +82,14 @@ function UserPage() {
           }
         </Grid>
         <PropertyModal 
-          
+          open={propertyOpen}
+          setOpen={setPropertyOpen}
+          style={style}
+        />
+        <NewPropertyModal 
+          open={newPropertyOpen}
+          setOpen={setNewPropertyOpen}
+          style={style}
         />
       </div>
     </div>

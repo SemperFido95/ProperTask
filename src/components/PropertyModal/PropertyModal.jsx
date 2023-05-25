@@ -4,7 +4,7 @@ import { Modal, Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
-function PropretyModal() {
+function PropretyModal({ open, setOpen, style }) {
     // Using hooks we're creating local state for a "heading" variable with
     // a default value of 'Functional Component'
     const store = useSelector((store) => store);
@@ -13,7 +13,7 @@ function PropretyModal() {
     const tasks = Object.keys(store.propertyDetails).length === 0 ? [''] : store.propertyDetails.tasks;
 
     const handleClose = () => {
-        dispatch({ type: 'SET_OPEN', payload: false });
+        setOpen(false);
         dispatch({ type: 'CLEAR_PROPERTY_DETAILS' });
         dispatch({ type: 'FETCH_PROPERTY_TASKS' });
     }
@@ -32,21 +32,9 @@ function PropretyModal() {
         })
     }
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 500,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-    };
-
     return (
         <Modal
-            open={store.modalReducer}
+            open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
