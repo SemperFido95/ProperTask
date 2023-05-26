@@ -46,4 +46,21 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
     });
 });
 
+router.post('/', (req, res) => {
+    console.log('in post request for properties');
+    const property = req.body;
+    const queryText = `
+        INSERT INTO properties (user_id, street, city, state, zip)
+        VALUES ($1, $2, $3, $4, $5);    
+    `;
+    pool.query(
+        queryText, [req.user.id, property.street, property.city, property.state, property.zip]
+    ).then(result => {
+        res.sendStatus(201);
+    }).catch(error => {
+        console.log(`Error posting new property: ${error}`);
+        res.sendStatus(500);
+    });
+});
+
 module.exports = router;
