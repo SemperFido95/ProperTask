@@ -8,7 +8,8 @@ function* fetchPropertyTasks() {
         // get all properties for logged in user
         const response = yield axios.get('/api/property-tasks');
 
-        yield put({ type: 'SET_PROPERTY_TASKS', payload: response.data });
+        yield put({ type: 'SET_PROPERTY_TASKS', payload: response.data.propertyTasks });
+        yield put({ type: 'SET_TASKS', payload: response.data.taskList });
     } catch (error) {
         console.log (`Error getting properties: ${error}`);
         alert('Something went wrong.');

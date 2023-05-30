@@ -4,6 +4,7 @@ import user from './user.reducer';
 import propertyTasks from './PropertyTask.reducer';
 import propertyDetails from './property.details.reducer';
 import modalReducer from './open.reducer';
+import taskReducer from './task.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   propertyTasks,
   propertyDetails,
   modalReducer,
+  taskReducer,
 });
 
 export default rootReducer;
