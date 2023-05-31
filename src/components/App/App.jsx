@@ -19,7 +19,7 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
-import AllProperties from '../../AllProperties/AllProperties';
+import AllProperties from '../AllProperties/AllProperties';
 import { Container } from '@mui/material';
 
 import './App.css';

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Modal, Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import PropertyPopover from '../PropertyPopover/PropertyPopover';
 
 function PropertyModal({ open, setOpen, style }) {
     // Using hooks we're creating local state for a "heading" variable with
@@ -47,7 +48,7 @@ function PropertyModal({ open, setOpen, style }) {
                     {`${info.city}, ${info.state}, ${info.zip}`}
                 </Typography>
                 <h5>Tasks:</h5>
-                <ul>
+                {/* <ul>
                     {
                         tasks.map(task => (
                             <li key={task.id}>
@@ -56,7 +57,23 @@ function PropertyModal({ open, setOpen, style }) {
                             </li>
                         ))
                     }
+                </ul> */}
+                <ul>
+                    {
+                        tasks.map(task => (
+                            <li key={task.id}>
+                                <PropertyPopover 
+                                    id={task.id}
+                                    complete={task.complete}
+                                    task={task.task}
+                                />
+                                {/* <input id={task.id} type="checkbox" defaultChecked={task.complete} onChange={(event) => markComplete(event, info.id)} />
+                                {task.task} */}
+                            </li>
+                        ))
+                    }
                 </ul>
+                
             </Box>
         </Modal>
     );
