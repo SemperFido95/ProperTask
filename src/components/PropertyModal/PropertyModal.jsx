@@ -4,7 +4,7 @@ import { Modal, Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
-function PropretyModal({ open, setOpen, style }) {
+function PropertyModal({ open, setOpen, style }) {
     // Using hooks we're creating local state for a "heading" variable with
     // a default value of 'Functional Component'
     const store = useSelector((store) => store);
@@ -53,7 +53,6 @@ function PropretyModal({ open, setOpen, style }) {
                             <li key={task.id}>
                                 <input id={task.id} type="checkbox" defaultChecked={task.complete} onChange={(event) => markComplete(event, info.id)} />
                                 {task.task}
-
                             </li>
                         ))
                     }
@@ -63,4 +62,4 @@ function PropretyModal({ open, setOpen, style }) {
     );
 }
 
-export default PropretyModal;
+export default PropertyModal;

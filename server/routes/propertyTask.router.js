@@ -48,6 +48,9 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
         `;
         result = await db.query(queryText, [req.user.id]);
         resultData.taskList = result.rows;
+        queryText = `SELECT * FROM properties WHERE user_id = $1;`;
+        result = await db.query(queryText, [req.user.id]);
+        resultData.propertyList = result.rows;
         await db.query('COMMIT');
         res.send(resultData);
     } catch (error) {

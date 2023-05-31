@@ -10,6 +10,7 @@ function* fetchPropertyTasks() {
 
         yield put({ type: 'SET_PROPERTY_TASKS', payload: response.data.propertyTasks });
         yield put({ type: 'SET_TASKS', payload: response.data.taskList });
+        yield put({ type: 'SET_PROPERTY_LIST', payload: response.data.propertyList });
     } catch (error) {
         console.log (`Error getting properties: ${error}`);
         alert('Something went wrong.');

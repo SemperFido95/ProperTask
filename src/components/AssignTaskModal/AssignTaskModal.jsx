@@ -14,7 +14,7 @@ function AssignTaskModal({ open, setOpen, style }) {
     const store = useReduxStore();
     const [task, setTask] = useState(0);
     const [property, setProperty] = useState(0);
-    const [id, setId] = useState(1);
+    const [id, setId] = useState(0);
 
     const handleClose = () => {
         setOpen(false);
@@ -22,17 +22,15 @@ function AssignTaskModal({ open, setOpen, style }) {
         dispatch({ type: 'FETCH_PROPERTY_TASKS' });
     }
 
-    const handleChange = event => {
-        setProperty(event.target.value);
-        setId(property)
-    }
-
     const assignTask = event => {
         event.preventDefault();
-        axios.post(`/api/property-tasks`, { task, id: 1 }).then(response => {
+        axios.post(`/api/property-tasks`, { task: task, id: property }).then(response => {
             console.log(response);
-            
-        })
+            alert('Task was assigned.');
+        }).catch(error => {
+            console.log(`Error assigning task: ${error}`);
+            alert('Something went wrong.');
+        });
     }
 
     return (
@@ -61,12 +59,9 @@ function AssignTaskModal({ open, setOpen, style }) {
                             label="Tasks"
                             onChange={event => setTask(event.target.value)}
                         >
-                            {/* <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem> */}
                             {
                                 store.taskReducer.map(task => (
-                                    <MenuItem value={task.id}>{task.task}</MenuItem>
+                                    <MenuItem key={task.id} value={task.id}>{task.task}</MenuItem>
                                 ))
                             }
                         </Select>
@@ -78,14 +73,11 @@ function AssignTaskModal({ open, setOpen, style }) {
                             id="property-select"
                             value={property}
                             label="Property"
-                            onChange={handleChange}
+                            onChange={event => setProperty(event.target.value)}
                         >
-                            {/* <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem> */}
                             {
-                                store.propertyTasks.map(property => (
-                                    <MenuItem value={property.id}>{property.street}</MenuItem>
+                                store.propertyListReducer.map(property => (
+                                    <MenuItem key={property.id} value={property.id}>{property.street}</MenuItem>
                                 ))
                             }
                         </Select>
