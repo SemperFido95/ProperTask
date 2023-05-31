@@ -58,7 +58,7 @@ function PropertyModal({ open, setOpen, style }) {
                         ))
                     }
                 </ul> */}
-                <ul>
+                <ul style={{paddingLeft: 0}}>
                     {
                         tasks.map(task => (
                             <li key={task.id}>

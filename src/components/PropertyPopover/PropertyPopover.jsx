@@ -1,81 +1,63 @@
 import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
-const options = [
-    'Show some love to MUI',
-    'Show all notification content',
-    'Hide sensitive notification content',
-    'Hide all notification content',
-];
+export default function ControlledAccordions({ id, task, complete }) {
+    const [expanded, setExpanded] = React.useState(false);
 
-export default function PropertyPopover({ id, complete, task }) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-    const open = Boolean(anchorEl);
-    const handleClickListItem = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
-        setAnchorEl(null);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
     };
 
     return (
-        <div>
-            <List
-                component="nav"
-                aria-label="Device settings"
-                sx={{ bgcolor: 'background.paper' }}
+        <div style={{ width: '50%', marginRight: 'auto' }}>
+            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}
+                style={{ border: 'none', paddingLeft: 0 }}
             >
-                <ListItem
-                    button
-                    id="lock-button"
-                    aria-haspopup="listbox"
-                    aria-controls="lock-menu"
-                    aria-label="when device is locked"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClickListItem}
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1bh-content"
+                    id="panel1bh-header"
                 >
-                    <ListItemText
-                        primary={task}
-                        // secondary={options[selectedIndex]}
-                    />
-                </ListItem>
-            </List>
-            <Menu
-                id="lock-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'lock-button',
-                    role: 'listbox',
-                }}
-                style={{ display: 'flex', flexDirection: 'column' }}
-            >
-                {/* {options.map((option, index) => (
-                    <MenuItem
-                        key={option}
-                        disabled={index === 0}
-                        selected={index === selectedIndex}
-                        onClick={(event) => handleMenuItemClick(event, index)}
-                    >
-                        {option}
-                    </MenuItem>
-                ))} */}
-                <MenuItem>Edit</MenuItem>
-                <MenuItem>Delete</MenuItem>
-                <MenuItem>Mark Complete</MenuItem>
-            </Menu>
+                    <Typography>
+                        {task}
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails style={{ padding: 0 }}>
+                    <ul style={{ display: 'flex', justifyContent: 'space-between', width: '25%', paddingLeft: 0 }}>
+                        <li>
+                            <Tooltip title="complete">
+                                <IconButton>
+                                    <CheckCircleOutlineIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </li>
+                        <li>
+                            <Tooltip title="edit">
+                                <IconButton>
+                                    <EditOutlinedIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </li>
+                        <li>
+                            <Tooltip title="delete">
+                                <IconButton>
+                                    <DeleteOutlineIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </li>
+                    </ul>
+                </AccordionDetails>
+            </Accordion>
         </div>
     );
 }
