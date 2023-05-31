@@ -59,4 +59,21 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
     }
 });
 
+router.post('/', (req, res) => {
+    console.log('in post request for propertyTasks');
+    const property = req.body;
+    console.log(req.user.id)
+    console.log('property:', property);
+    const queryText = `
+        INSERT INTO property_tasks (user_id, property_id, task_id)
+        VALUES ($1, $2, $3);
+    `;
+    pool.query(queryText, [req.user.id, property.id, property.task]).then(result => {
+        res.sendStatus(201);
+    }).catch(error => {
+        console.log(`Error assigning new task: ${error}`);
+        res.sendStatus(500);
+    });
+})
+
 module.exports = router;

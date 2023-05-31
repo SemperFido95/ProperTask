@@ -19,6 +19,7 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import AllProperties from '../../AllProperties/AllProperties';
 import { Container } from '@mui/material';
 
 import './App.css';
@@ -66,9 +67,9 @@ function App() {
             <ProtectedRoute
               // logged in shows InfoPage else shows LoginPage
               exact
-              path="/info"
+              path="/properties"
             >
-              <InfoPage />
+              <AllProperties />
             </ProtectedRoute>
 
             <Route
