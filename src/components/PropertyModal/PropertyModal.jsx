@@ -3,7 +3,13 @@ import { useSelector } from 'react-redux';
 import { Modal, Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import PropertyPopover from '../PropertyPopover/PropertyPopover';
+import Checkbox from '@mui/material/Checkbox';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+
 
 function PropertyModal({ open, setOpen, style }) {
     // Using hooks we're creating local state for a "heading" variable with
@@ -12,6 +18,11 @@ function PropertyModal({ open, setOpen, style }) {
     const dispatch = useDispatch();
     const info = Object.keys(store.propertyDetails).length === 0 ? '' : store.propertyDetails.info[0];
     const tasks = Object.keys(store.propertyDetails).length === 0 ? [''] : store.propertyDetails.tasks;
+    const [checked, setChecked] = React.useState(true);
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+    };
 
     const handleClose = () => {
         setOpen(false);
@@ -20,6 +31,7 @@ function PropertyModal({ open, setOpen, style }) {
     }
 
     const markComplete = (event, propertyId) => {
+        console.log(event)
         let status = event.target.checked;
         let id = Number(event.target.id);
         let completeObject = {};
@@ -30,7 +42,7 @@ function PropertyModal({ open, setOpen, style }) {
         }).catch((error) => {
             console.log(`Error in PUT ${error}`);
             alert('Something went wrong');
-        })
+        });
     }
 
     return (
@@ -41,39 +53,50 @@ function PropertyModal({ open, setOpen, style }) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2" style={{ textAlign: 'left' }} >
+                <Typography id="modal-modal-title" variant="h6" component="h2" style={{ textAlign: 'center' }} >
                     {info.street}
                 </Typography>
-                <Typography id="modal-modal-description">
+                <Typography id="modal-modal-description" style={{ textAlign: 'center' }}>
                     {`${info.city}, ${info.state}, ${info.zip}`}
                 </Typography>
-                <h5>Tasks:</h5>
-                {/* <ul>
+                {/* <h5>Tasks:</h5> */}
+                <Typography variant='h6'>
+                    Tasks:
+                </Typography>
+                {/* <ul style={{paddingLeft: 0}}>
                     {
                         tasks.map(task => (
                             <li key={task.id}>
                                 <input id={task.id} type="checkbox" defaultChecked={task.complete} onChange={(event) => markComplete(event, info.id)} />
                                 {task.task}
-                            </li>
+                                <Divider />
+                            </li>                            
                         ))
                     }
                 </ul> */}
-                <ul style={{paddingLeft: 0}}>
+                <ul style={{ paddingLeft: 0 }}>
                     {
                         tasks.map(task => (
                             <li key={task.id}>
-                                <PropertyPopover 
-                                    id={task.id}
-                                    complete={task.complete}
-                                    task={task.task}
-                                />
-                                {/* <input id={task.id} type="checkbox" defaultChecked={task.complete} onChange={(event) => markComplete(event, info.id)} />
-                                {task.task} */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <FormGroup>
+                                        <FormControlLabel
+                                            control={<Checkbox defaultChecked={task.complete} id={task.id}/>}
+                                            // id={task.id}
+                                            
+                                            label={task.task}
+                                            onChange={(event) => markComplete(event, info.id)}
+                                        />
+                                    </FormGroup>
+                                    <IconButton onClick={() => console.log('test')}>
+                                        <DeleteOutlineOutlinedIcon />
+                                    </IconButton>
+                                </div>
+                                <Divider />
                             </li>
                         ))
                     }
                 </ul>
-                
             </Box>
         </Modal>
     );
