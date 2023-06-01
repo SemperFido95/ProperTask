@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-
+import DeleteTask from '../DeleteTask/DeleteTask';
 
 function PropertyModal({ open, setOpen, style }) {
     // Using hooks we're creating local state for a "heading" variable with
@@ -18,11 +18,16 @@ function PropertyModal({ open, setOpen, style }) {
     const dispatch = useDispatch();
     const info = Object.keys(store.propertyDetails).length === 0 ? '' : store.propertyDetails.info[0];
     const tasks = Object.keys(store.propertyDetails).length === 0 ? [''] : store.propertyDetails.tasks;
-    const [checked, setChecked] = React.useState(true);
+    const [deleteOpen, setDeleteOpen] = React.useState(false);
+    const [id, setId] = useState(0);
+    const [propertyId, setPropertyId] = useState(0);
 
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
+    const deleteDialog = (taskId, propertyId) => {
+        setId(taskId);
+        setPropertyId(propertyId)
+        // console.log('task ID:', id);
+        setDeleteOpen(true);
+    }
 
     const handleClose = () => {
         setOpen(false);
@@ -63,17 +68,6 @@ function PropertyModal({ open, setOpen, style }) {
                 <Typography variant='h6'>
                     Tasks:
                 </Typography>
-                {/* <ul style={{paddingLeft: 0}}>
-                    {
-                        tasks.map(task => (
-                            <li key={task.id}>
-                                <input id={task.id} type="checkbox" defaultChecked={task.complete} onChange={(event) => markComplete(event, info.id)} />
-                                {task.task}
-                                <Divider />
-                            </li>                            
-                        ))
-                    }
-                </ul> */}
                 <ul style={{ paddingLeft: 0 }}>
                     {
                         tasks.map(task => (
@@ -88,11 +82,17 @@ function PropertyModal({ open, setOpen, style }) {
                                             onChange={(event) => markComplete(event, info.id)}
                                         />
                                     </FormGroup>
-                                    <IconButton onClick={() => console.log('test')}>
+                                    <IconButton onClick={() => deleteDialog(task.id, info.id)}>
                                         <DeleteOutlineOutlinedIcon />
                                     </IconButton>
                                 </div>
                                 <Divider />
+                                <DeleteTask 
+                                    open={deleteOpen}
+                                    setOpen={setDeleteOpen}
+                                    taskId={id}
+                                    propertyId={propertyId}
+                                />
                             </li>
                         ))
                     }

@@ -62,7 +62,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
     }
 });
 
-router.post('/', (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
     console.log('in post request for propertyTasks');
     const property = req.body;
     console.log(req.user.id)
@@ -77,6 +77,18 @@ router.post('/', (req, res) => {
         console.log(`Error assigning new task: ${error}`);
         res.sendStatus(500);
     });
-})
+});
+
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    console.log('In delete request for /property-tasks');
+    const queryText = `DELETE FROM property_tasks WHERE id = $1`;
+    pool.query(queryText, [id]).then(result => {
+        res.sendStatus(200);
+    }).catch(error => {
+        console.log(`Error deleting property task:`, error);
+        res.sendStatus(500);
+    });
+});
 
 module.exports = router;
