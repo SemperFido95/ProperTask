@@ -34,18 +34,10 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
     }
 });
 
-router.put('/:id', rejectUnauthenticated, (req, res) => {
-    console.log('in put request for propertyDetails');
-    console.log(req.body);
-    console.log(req.params.id);
-    const queryText = `UPDATE property_tasks SET complete = $1 WHERE id = $2`;
-    pool.query(queryText, [req.body.complete, req.params.id]).then(result => {
-        res.sendStatus(201);
-    }).catch(error => {
-        console.log(`Error in put: ${error}`);
-        res.sendStatus(500);
-    });
-});
+router.put('/:id', (req, res) => {
+    console.log('updating property');
+    const queryText = `UPDATE properties SET`
+})
 
 router.post('/', (req, res) => {
     console.log('in post request for properties');
@@ -60,6 +52,17 @@ router.post('/', (req, res) => {
         res.sendStatus(201);
     }).catch(error => {
         console.log(`Error posting new property: ${error}`);
+        res.sendStatus(500);
+    });
+});
+
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+    console.log('deleting property');
+    const queryText = `DELETE FROM properties WHERE id = $1;`;
+    pool.query(queryText, [req.body.propertyId]).then(result => {
+        res.sendStatus(200);
+    }).catch(error => {
+        console.log(`Error deleting property:`, error);
         res.sendStatus(500);
     });
 });

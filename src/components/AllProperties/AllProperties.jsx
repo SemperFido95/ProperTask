@@ -11,21 +11,23 @@ import IconButton from '@mui/material/IconButton';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import useReduxStore from '../../hooks/useReduxStore';
-
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+import UpdatePropertyModal from '../UpdatePropertyModal/UpdatePropertyModal';
 
 export default function AllProperties() {
     const store = useReduxStore();
+    const [open, setOpen] = React.useState(false);
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 500,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
 
     return (
         <div>
@@ -58,7 +60,7 @@ export default function AllProperties() {
                                 <TableCell align="right">{property.zip}</TableCell>
                                 <TableCell align='right'>
                                     <Tooltip title='Edit'>
-                                        <IconButton>
+                                        <IconButton onClick={() => setOpen(true)}>
                                             <EditOutlinedIcon />
                                         </IconButton>
                                     </Tooltip>
@@ -70,6 +72,16 @@ export default function AllProperties() {
                                         </IconButton>
                                     </Tooltip>
                                 </TableCell>
+                                <UpdatePropertyModal
+                                id={property.id}
+                                    street={property.street}
+                                    city={property.city}
+                                    state={property.state}
+                                    zip={property.zip}
+                                    open={open}
+                                    setOpen={setOpen}
+                                    style={style}
+                                />
                             </TableRow>
                         ))}
                     </TableBody>
