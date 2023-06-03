@@ -34,10 +34,24 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
     }
 });
 
-router.put('/:id', (req, res) => {
-    console.log('updating property');
-    const queryText = `UPDATE properties SET`
-})
+/**
+ * POST route template
+ */
+router.put('/:id', rejectUnauthenticated, (req, res) => {
+    const property = req.body;
+    const queryText = `
+        UPDATE properties
+        SET street = $1, city = $2, state = $3, zip = $4
+        WHERE id = $5;
+    `;
+    pool.query(queryText, [property.street, property.city, property.state, property.zip, property.id])
+        .then(result => {
+            res.sendStatus(200);
+        }).catch(error => {
+            console.log(`Error updating properties: ${error}`);
+            res.sendStatus(500);
+        });
+});
 
 router.post('/', (req, res) => {
     console.log('in post request for properties');
@@ -55,17 +69,6 @@ router.post('/', (req, res) => {
         res.sendStatus(500);
     });
 });
-
-// router.delete('/:id', rejectUnauthenticated, (req, res) => {
-//     console.log('deleting property');
-//     const queryText = `DELETE FROM properties WHERE id = $1;`;
-//     pool.query(queryText, [req.params.id]).then(result => {
-//         res.sendStatus(200);
-//     }).catch(error => {
-//         console.log(`Error deleting property:`, error);
-//         res.sendStatus(500);
-//     });
-// });
 
 router.delete('/:id', rejectUnauthenticated, async (req, res) => {
     console.log('in delete request for /api/properties');

@@ -108,6 +108,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import useReduxStore from '../../hooks/useReduxStore';
+import axios from 'axios';
 import DeleteProperty from '../DeleteProperty/DeleteProperty';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -124,6 +125,7 @@ export default function AllProperties() {
     const [rowModesModel, setRowModesModel] = React.useState({});
     const [open, setOpen] = React.useState(false);
     const [deleteId, setDeleteId] = React.useState(0);
+    const [updateObject, setUpdateObject] = React.useState({});
 
     useEffect(() => {
         dispatch({ type: 'FETCH_PROPERTY_TASKS' });
@@ -144,6 +146,8 @@ export default function AllProperties() {
 
     const handleSaveClick = (id) => () => {
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+        console.log(updateObject);
+
     };
 
     const handleDeleteClick = (id) => () => {
@@ -164,14 +168,26 @@ export default function AllProperties() {
         }
     };
 
-    const processRowUpdate = (newRow) => {
+    const processRowUpdate = (newRow, id) => {
         const updatedRow = { ...newRow, isNew: false };
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        console.log(updatedRow);
+        axios.put(`/api/properties/${id}`, updatedRow).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log(`Error updating property: ${error}`);
+            alert('Something went wrong.');
+        });
         return updatedRow;
     };
 
     const handleRowModesModelChange = (newRowModesModel) => {
         setRowModesModel(newRowModesModel);
+    };
+
+    const handleProcessRowUpdateError = error => {
+        // setSnackbar({ children: error.message, severity: 'error' });
+        console.log(error);
     };
 
     const columns = [
@@ -180,12 +196,18 @@ export default function AllProperties() {
             field: 'street',
             headerName: 'Street',
             editable: true,
-            width: 300
+            width: 250
         },
         {
             field: 'city',
             headerName: 'City',
-            width: 180,
+            width: 200,
+            editable: true,
+        },
+        {
+            field: 'state',
+            headerName: 'State',
+            width: 10,
             editable: true,
         },
         {
@@ -198,14 +220,14 @@ export default function AllProperties() {
                 }
                 return `${params.value}`;
             },
-            width: 220,
+            width: 200,
             editable: true,
         },
         {
             field: 'actions',
             type: 'actions',
             headerName: 'Actions',
-            width: 100,
+            width: 200,
             cellClassName: 'actions',
             getActions: ({ id }) => {
                 const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -247,39 +269,43 @@ export default function AllProperties() {
     ];
 
     return (
-        <Box
-            sx={{
-                height: 500,
-                width: '100%',
-                '& .actions': {
-                    color: 'text.secondary',
-                },
-                '& .textPrimary': {
-                    color: 'text.primary',
-                },
-            }}
-        >
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                editMode="row"
-                rowModesModel={rowModesModel}
-                onRowModesModelChange={handleRowModesModelChange}
-                onRowEditStart={handleRowEditStart}
-                onRowEditStop={handleRowEditStop}
-                processRowUpdate={processRowUpdate}
-                // slots={{
-                //     toolbar: EditToolbar,
-                // }}
-                slotProps={{
-                    toolbar: { setRows, setRowModesModel },
+        <div>
+            <h2>All Properties</h2>
+            <Box
+                sx={{
+                    height: 500,
+                    width: '100%',
+                    '& .actions': {
+                        color: 'text.secondary',
+                    },
+                    '& .textPrimary': {
+                        color: 'text.primary',
+                    },
                 }}
-            />
-            <DeleteProperty
-                open={open}
-                setOpen={setOpen}
-                propertyId={deleteId}
-            />
-        </Box>
+            >
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    editMode="row"
+                    rowModesModel={rowModesModel}
+                    onRowModesModelChange={handleRowModesModelChange}
+                    onRowEditStart={handleRowEditStart}
+                    onRowEditStop={handleRowEditStop}
+                    processRowUpdate={processRowUpdate}
+                    onProcessRowUpdateError={handleProcessRowUpdateError}
+                    // slots={{
+                    //     toolbar: EditToolbar,
+                    // }}
+                    slotProps={{
+                        toolbar: { setRows, setRowModesModel },
+                    }}
+                />
+                <DeleteProperty
+                    open={open}
+                    setOpen={setOpen}
+                    propertyId={deleteId}
+                />
+            </Box>
+        </div>
     );
 }
