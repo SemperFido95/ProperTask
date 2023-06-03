@@ -12,10 +12,12 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import useReduxStore from '../../hooks/useReduxStore';
 import UpdatePropertyModal from '../UpdatePropertyModal/UpdatePropertyModal';
+import DeleteProperty from '../DeleteProperty/DeleteProperty';
 
 export default function AllProperties() {
     const store = useReduxStore();
     const [open, setOpen] = React.useState(false);
+    const [deleteOpen, setDeleteOpen] = React.useState(false);
 
     const style = {
         position: 'absolute',
@@ -67,7 +69,7 @@ export default function AllProperties() {
                                 </TableCell>
                                 <TableCell align='right'>
                                     <Tooltip title='Delete'>
-                                        <IconButton>
+                                        <IconButton onClick={() => setDeleteOpen(true)}>
                                             <DeleteOutlineIcon />
                                         </IconButton>
                                     </Tooltip>
@@ -81,6 +83,11 @@ export default function AllProperties() {
                                     open={open}
                                     setOpen={setOpen}
                                     style={style}
+                                />
+                                <DeleteProperty 
+                                    open={deleteOpen}
+                                    setOpen={setDeleteOpen}
+                                    propertyId={property.id}
                                 />
                             </TableRow>
                         ))}

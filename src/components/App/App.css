@@ -116,7 +116,7 @@ h2 {
 }
 
 .main-container {
-  height: calc(100vh - 120px - 96.5px - 19.5px);
+  min-height: calc(100vh - 120px - 96.5px - 19.5px);
 }
 
 ul {
