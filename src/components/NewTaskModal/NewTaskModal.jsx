@@ -54,7 +54,7 @@ function NewTaskModal({ open, setOpen, style }) {
                             onChange={event => setTask(event.target.value)}
                             size="small"
                         />
-                        <Button type="submit" variant="contained">Add</Button>
+                        <Button type="submit" variant="outlined">Add</Button>
                     </div>
                 </Box>
             </Box>

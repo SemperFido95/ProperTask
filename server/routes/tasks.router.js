@@ -16,4 +16,27 @@ router.post('/', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+    console.log('in put request for /api/tasks');
+    const queryText = `UPDATE tasks SET task = $1 WHERE id = $2;`;
+    pool.query(queryText, [req.body.task, req.body.id])
+        .then(result => {
+            res.sendStatus(200);
+        }).catch(error => {
+            console.log(`error updating properties: ${error}`);
+        res.sendStatus(500);
+        });
+});
+
+router.delete('/:id', (req,res) => {
+    console.log('in delete request for /api/tasks');
+    const queryText = `DELETE FROM tasks WHERE id = $1`;
+    pool.query(queryText, [req.params.id]).then(result => {
+        res.sendStatus(200);
+    }).catch(error => {
+        console.log(`Error deleting task: ${error}`);
+        res.sendStatus(500);
+    });
+});
+
 module.exports = router;

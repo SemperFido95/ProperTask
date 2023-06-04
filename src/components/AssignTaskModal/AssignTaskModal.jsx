@@ -48,7 +48,7 @@ function AssignTaskModal({ open, setOpen, style }) {
                     sx={{ minWidth: 120 }}
                     component="form"
                     onSubmit={assignTask}
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center', width: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0 auto' }}
                 >
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Task:</InputLabel>
@@ -58,6 +58,7 @@ function AssignTaskModal({ open, setOpen, style }) {
                             value={task}
                             label="Tasks"
                             onChange={event => setTask(event.target.value)}
+                            size="small"
                         >
                             {
                                 store.taskReducer.map(task => (
@@ -74,6 +75,7 @@ function AssignTaskModal({ open, setOpen, style }) {
                             value={property}
                             label="Property"
                             onChange={event => setProperty(event.target.value)}
+                            size="small"
                         >
                             {
                                 store.propertyListReducer.map(property => (

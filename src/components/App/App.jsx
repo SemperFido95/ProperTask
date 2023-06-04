@@ -20,6 +20,7 @@ import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import AllProperties from '../AllProperties/AllProperties';
+import AllTasks from '../AllTasks/AllTasks';
 import { Container } from '@mui/material';
 
 import './App.css';
@@ -70,6 +71,14 @@ function App() {
               path="/properties"
             >
               <AllProperties />
+            </ProtectedRoute>
+
+            <ProtectedRoute
+              // logged in shows InfoPage else shows LoginPage
+              exact
+              path="/tasks"
+            >
+              <AllTasks />
             </ProtectedRoute>
 
             <Route

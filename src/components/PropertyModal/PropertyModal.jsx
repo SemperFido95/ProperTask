@@ -12,8 +12,6 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import DeleteTask from '../DeleteTask/DeleteTask';
 
 function PropertyModal({ open, setOpen, style }) {
-    // Using hooks we're creating local state for a "heading" variable with
-    // a default value of 'Functional Component'
     const store = useSelector((store) => store);
     const dispatch = useDispatch();
     const info = Object.keys(store.propertyDetails).length === 0 ? '' : store.propertyDetails.info[0];
@@ -25,7 +23,6 @@ function PropertyModal({ open, setOpen, style }) {
     const deleteDialog = (taskId, propertyId) => {
         setId(taskId);
         setPropertyId(propertyId)
-        // console.log('task ID:', id);
         setDeleteOpen(true);
     }
 
@@ -76,8 +73,6 @@ function PropertyModal({ open, setOpen, style }) {
                                     <FormGroup>
                                         <FormControlLabel
                                             control={<Checkbox defaultChecked={task.complete} id={task.id}/>}
-                                            // id={task.id}
-                                            
                                             label={task.task}
                                             onChange={(event) => markComplete(event, info.id)}
                                         />

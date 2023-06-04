@@ -4,26 +4,26 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Snackbar, Alert } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
-export default function DeleteProperty({ open, setOpen, propertyId }) {
+export default function DeleteTask2({ open, setOpen, rows, setRows, taskId, id }) {
     const dispatch = useDispatch();
 
     const deleteItem = () => {
-        axios.delete(`/api/properties/${propertyId}`).then(response => {
+        axios.delete(`/api/tasks/${id}`).then(response => {
             console.log(response);
-            dispatch({ type: 'FETCH_PROPERTY_TASKS' });
+            setRows(rows.filter((row) => row.id !== id));
             handleClose();
         }).catch(error => {
-            console.log(`Error deleting property:`, error);
+            console.log(`Error deleting property task:`, error);
             alert('Something went wrong.');
         });
     }
 
     const handleClose = () => {
+        dispatch({ type: 'FETCH_PROPERTY_TASKS' });
         setOpen(false);
     };
 
@@ -36,15 +36,15 @@ export default function DeleteProperty({ open, setOpen, propertyId }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Delete this property?"}
+                    {"Delete this task?"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        This action is irreversible. If you wish to continue, 
-                        select "delete" below. Otherwise, select "cancel" to return to the list of properties.
+                        This action is irreversible. If you wish to continue,
+                        select "delete" below. Otherwise, select "cancel" to return to the list of tasks.
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions style={{display: 'flex', justifyContent: 'space-around'}}>
+                <DialogActions style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <Button variant='outlined' onClick={handleClose}>Cancel</Button>
                     <Button variant='outlined' color='error' onClick={deleteItem} autoFocus>
                         Delete

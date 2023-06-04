@@ -33,7 +33,11 @@ function Nav() {
             </Link>
 
             <Link className="navLink" to="/properties">
-              All Properties
+              Properties
+            </Link>
+
+            <Link className="navLink" to="/tasks">
+              Tasks
             </Link>
 
             <LogOutButton className="navLink" />

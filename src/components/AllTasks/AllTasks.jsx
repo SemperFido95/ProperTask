@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
@@ -10,6 +8,7 @@ import useReduxStore from '../../hooks/useReduxStore';
 import { Snackbar, Alert, useScrollTrigger } from '@mui/material';
 import axios from 'axios';
 import DeleteProperty from '../DeleteProperty/DeleteProperty';
+import DeleteTask2 from '../DeleteTask/DeleteTask2';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
@@ -18,7 +17,7 @@ import {
     GridActionsCellItem,
 } from '@mui/x-data-grid';
 
-export default function AllProperties() {
+export default function AllTasks() {
     const dispatch = useDispatch();
     const store = useReduxStore();
     const [rows, setRows] = React.useState([]);
@@ -29,7 +28,7 @@ export default function AllProperties() {
 
     useEffect(() => {
         dispatch({ type: 'FETCH_PROPERTY_TASKS' });
-        setRows(store.propertyListReducer);
+        setRows(store.taskReducer);
     }, [dispatch]);
 
     const handleRowEditStart = (params, event) => {
@@ -51,9 +50,8 @@ export default function AllProperties() {
     const handleCloseSnackbar = () => setSnackbar(null);
 
     const handleDeleteClick = (id) => () => {
-        setRows(rows.filter((row) => row.id !== id));
-        setOpen(true);
         setDeleteId(id);
+        setOpen(true);
     };
 
     const handleCancelClick = (id) => () => {
@@ -72,8 +70,8 @@ export default function AllProperties() {
         const updatedRow = { ...newRow, isNew: false };
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         console.log(updatedRow);
-        setSnackbar({ children: 'Property successfully updated', severity: 'success' });
-        axios.put(`/api/properties/${id}`, updatedRow).then(response => {
+        setSnackbar({ children: 'User successfully saved', severity: 'success' });
+        axios.put(`/api/tasks/${id}`, updatedRow).then(response => {
             console.log(response);
         }).catch(error => {
             console.log(`Error updating property: ${error}`);
@@ -88,48 +86,27 @@ export default function AllProperties() {
 
     const handleProcessRowUpdateError = error => {
         console.log(error);
-        setSnackbar({ children: 'property update failed.', severity: 'error' });
+        setSnackbar({ children: error.message, severity: 'error' });
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 180 },
+        { field: 'id', headerName: 'ID', width: 500 },
         {
-            field: 'street',
-            headerName: 'Street',
+            field: 'task',
+            headerName: 'Task',
             editable: true,
-            width: 250
-        },
-        {
-            field: 'city',
-            headerName: 'City',
-            width: 200,
-            editable: true,
-        },
-        {
-            field: 'state',
-            headerName: 'State',
-            width: 100,
-            editable: true,
-        },
-        {
-            field: 'zip',
-            headerName: 'Zip',
-            type: 'number',
-            valueGetter: (params) => {
-                if (!params.value) {
-                    return params.value;
-                }
-                return `${params.value}`;
-            },
-            width: 200,
-            editable: true,
+            width: 400,
+            headerAlign: 'left',
+            align: 'left'
         },
         {
             field: 'actions',
             type: 'actions',
             headerName: 'Actions',
-            width: 200,
+            width: 250,
             cellClassName: 'actions',
+            headerAlign: 'right',
+            align: 'right',
             getActions: ({ id }) => {
                 const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
@@ -171,7 +148,7 @@ export default function AllProperties() {
 
     return (
         <div>
-            <h2>All Properties</h2>
+            <h2>All Tasks</h2>
             <Box
                 sx={{
                     height: 500,
@@ -194,9 +171,6 @@ export default function AllProperties() {
                     onRowEditStop={handleRowEditStop}
                     processRowUpdate={processRowUpdate}
                     onProcessRowUpdateError={handleProcessRowUpdateError}
-                    // slots={{
-                    //     toolbar: EditToolbar,
-                    // }}
                     slotProps={{
                         toolbar: { setRows, setRowModesModel },
                     }}
@@ -211,10 +185,12 @@ export default function AllProperties() {
                         <Alert {...snackbar} onClose={handleCloseSnackbar} />
                     </Snackbar>
                 )}
-                <DeleteProperty
+                <DeleteTask2
                     open={open}
                     setOpen={setOpen}
-                    propertyId={deleteId}
+                    id={deleteId}
+                    rows={rows}
+                    setRows={setRows}
                 />
             </Box>
         </div>
