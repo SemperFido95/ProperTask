@@ -38,7 +38,7 @@ function PropertyModal({ open, setOpen, style }) {
         let id = Number(event.target.id);
         let completeObject = {};
         status === true ? completeObject.complete = true : completeObject.complete = false;
-        axios.put(`/api/properties/${id}`, completeObject).then((response) => {
+        axios.put(`/api/property-tasks/${id}`, completeObject).then((response) => {
             console.log(response);
             dispatch({ type: 'GET_PROPERTY_DETAILS', id: propertyId });
         }).catch((error) => {

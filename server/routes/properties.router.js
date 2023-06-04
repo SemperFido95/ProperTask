@@ -73,7 +73,6 @@ router.post('/', (req, res) => {
 router.delete('/:id', rejectUnauthenticated, async (req, res) => {
     console.log('in delete request for /api/properties');
     const db = await pool.connect();
-    let resultData = {};
 
     try {
         await db.query('BEGIN');

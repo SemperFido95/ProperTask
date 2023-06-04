@@ -1,4 +1,5 @@
 const express = require('express');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
 
@@ -28,15 +29,32 @@ router.put('/:id', (req, res) => {
         });
 });
 
-router.delete('/:id', (req,res) => {
+
+router.delete('/:id', rejectUnauthenticated, async (req, res) => {
     console.log('in delete request for /api/tasks');
-    const queryText = `DELETE FROM tasks WHERE id = $1`;
-    pool.query(queryText, [req.params.id]).then(result => {
+    const db = await pool.connect();
+
+    try {
+        await db.query('BEGIN');
+        let queryText = `
+            DELETE FROM property_tasks
+            WHERE task_id = $1;
+        `;
+        let result = await db.query(queryText, [req.params.id]);
+        queryText = `
+            DELETE FROM tasks
+            WHERE id = $1;
+        `;
+        result = await db.query(queryText, [req.params.id]);
+        await db.query('COMMIT');
         res.sendStatus(200);
-    }).catch(error => {
-        console.log(`Error deleting task: ${error}`);
+    } catch (error) {
+        console.log('ROLLBACK', error);
+        await db.query('ROLLBACK');
         res.sendStatus(500);
-    });
+    } finally {
+        db.release();
+    }
 });
 
 module.exports = router;
