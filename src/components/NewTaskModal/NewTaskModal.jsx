@@ -3,7 +3,7 @@ import { Modal, Typography, Box, TextField, Button } from '@mui/material';
 import axios from "axios";
 import { useState } from "react";
 
-function NewTaskModal({ open, setOpen, style }) {
+function NewTaskModal({ open, setOpen, style, snackbar, setSnackbar }) {
     const dispatch = useDispatch();
     const [task, setTask] = useState('');
 
@@ -18,10 +18,10 @@ function NewTaskModal({ open, setOpen, style }) {
 
         axios.post('/api/tasks', { task }).then(response => {
             console.log(response);
-            handleClose();
+            setSnackbar({ children: 'Task successfully created', severity: 'success' });
         }).catch(error => {
             console.log(`Error adding task: ${error}`);
-            alert('Something went wrong.');
+            setSnackbar({ children: error.message, severity: 'error' });
         });
     }
 

@@ -3,10 +3,9 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
-// GET property details
-
+// Get property details
 router.get('/:id', rejectUnauthenticated, async (req, res) => {
-    console.log('in get request for propertyDetails');
+    console.log('in GET request for /api/properties');
     const db = await pool.connect();
     let resultData = {};
 
@@ -34,10 +33,9 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
     }
 });
 
-/**
- * POST route template
- */
+// Update property details
 router.put('/:id', rejectUnauthenticated, (req, res) => {
+    console.log('in PUT request for /api/properties');
     const property = req.body;
     const queryText = `
         UPDATE properties
@@ -53,8 +51,9 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
         });
 });
 
-router.post('/', (req, res) => {
-    console.log('in post request for properties');
+// Create new property
+router.post('/', rejectUnauthenticated, (req, res) => {
+    console.log('in POST request for /api/properties');
     const property = req.body;
     const queryText = `
         INSERT INTO properties (user_id, street, city, state, zip)
@@ -70,17 +69,21 @@ router.post('/', (req, res) => {
     });
 });
 
+// Delete Property
 router.delete('/:id', rejectUnauthenticated, async (req, res) => {
-    console.log('in delete request for /api/properties');
+    console.log('in DELETE request for /api/properties');
     const db = await pool.connect();
 
     try {
         await db.query('BEGIN');
+        // First, delete all tasks that been assigned to this
+        // property in the property_tasks table
         let queryText = `
             DELETE FROM property_tasks
             WHERE property_id = $1;
         `;
         let result = await db.query(queryText, [req.params.id]);
+        // Second, delete property from properties table
         queryText = `
             DELETE FROM properties
             WHERE id = $1;

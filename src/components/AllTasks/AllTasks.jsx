@@ -70,11 +70,11 @@ export default function AllTasks() {
         const updatedRow = { ...newRow, isNew: false };
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         console.log(updatedRow);
-        setSnackbar({ children: 'User successfully saved', severity: 'success' });
+        setSnackbar({ children: 'Task successfully updated', severity: 'success' });
         axios.put(`/api/tasks/${id}`, updatedRow).then(response => {
             console.log(response);
         }).catch(error => {
-            console.log(`Error updating property: ${error}`);
+            console.log(`Error updating task: ${error}`);
             setSnackbar({ children: error.message, severity: 'error' });
         });
         return updatedRow;
@@ -191,6 +191,8 @@ export default function AllTasks() {
                     id={deleteId}
                     rows={rows}
                     setRows={setRows}
+                    snackbar={snackbar}
+                    setSnackbar={setSnackbar}
                 />
             </Box>
         </div>

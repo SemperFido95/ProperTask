@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import DeleteTask from '../DeleteTask/DeleteTask';
 
-function PropertyModal({ open, setOpen, style }) {
+function PropertyModal({ open, setOpen, style, snackbar, setSnackbar }) {
     const store = useSelector((store) => store);
     const dispatch = useDispatch();
     const info = Object.keys(store.propertyDetails).length === 0 ? '' : store.propertyDetails.info[0];
@@ -72,7 +72,7 @@ function PropertyModal({ open, setOpen, style }) {
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <FormGroup>
                                         <FormControlLabel
-                                            control={<Checkbox defaultChecked={task.complete} id={task.id}/>}
+                                            control={<Checkbox defaultChecked={task.complete} id={task.id} />}
                                             label={task.task}
                                             onChange={(event) => markComplete(event, info.id)}
                                         />
@@ -82,11 +82,13 @@ function PropertyModal({ open, setOpen, style }) {
                                     </IconButton>
                                 </div>
                                 <Divider />
-                                <DeleteTask 
+                                <DeleteTask
                                     open={deleteOpen}
                                     setOpen={setDeleteOpen}
                                     taskId={id}
                                     propertyId={propertyId}
+                                    snackbar={snackbar}
+                                    setSnackbar={setSnackbar}
                                 />
                             </li>
                         ))

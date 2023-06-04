@@ -9,7 +9,7 @@ import axios from "axios";
 import { useState } from "react";
 import useReduxStore from '../../hooks/useReduxStore';
 
-function AssignTaskModal({ open, setOpen, style }) {
+function AssignTaskModal({ open, setOpen, style, snackbar, setSnackbar }) {
     const dispatch = useDispatch();
     const store = useReduxStore();
     const [task, setTask] = useState(0);
@@ -26,10 +26,10 @@ function AssignTaskModal({ open, setOpen, style }) {
         event.preventDefault();
         axios.post(`/api/property-tasks`, { task: task, id: property }).then(response => {
             console.log(response);
-            alert('Task was assigned.');
+            setSnackbar({ children: 'Task assigned', severity: 'success' });
         }).catch(error => {
             console.log(`Error assigning task: ${error}`);
-            alert('Something went wrong.');
+            setSnackbar({ children: error.message, severity: 'error' });
         });
     }
 

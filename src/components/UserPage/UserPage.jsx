@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import useReduxStore from '../../hooks/useReduxStore';
+import { Snackbar, Alert } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import PropertyModal from '../PropertyModal/PropertyModal';
@@ -18,12 +15,11 @@ import NewTaskModal from '../NewTaskModal/NewTaskModal';
 import AssignTaskModal from '../AssignTaskModal/AssignTaskModal';
 
 function UserPage() {
-  // this component doesn't do much to start, just renders some user reducer info to the DOM
-  const [id, setId] = useState('');
   const [propertyOpen, setPropertyOpen] = useState(false);
   const [newPropertyOpen, setNewPropertyOpen] = useState(false);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
   const [assignTaskOpen, setAssignTaskOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState(null);
   const store = useReduxStore();
   const dispatch = useDispatch();
 
@@ -46,7 +42,9 @@ function UserPage() {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-};
+  };
+
+  const handleCloseSnackbar = () => setSnackbar(null);
 
   return (
     <div className="container">
@@ -79,30 +77,47 @@ function UserPage() {
             ))
           }
         </Grid>
-        <PropertyModal 
+        <PropertyModal
           open={propertyOpen}
           setOpen={setPropertyOpen}
           style={style}
+          snackbar={snackbar}
+          setSnackbar={setSnackbar}
         />
-        <NewPropertyModal 
+        <NewPropertyModal
           open={newPropertyOpen}
           setOpen={setNewPropertyOpen}
           style={style}
+          snackbar={snackbar}
+          setSnackbar={setSnackbar}
         />
-        <NewTaskModal 
+        <NewTaskModal
           open={newTaskOpen}
           setOpen={setNewTaskOpen}
           style={style}
+          snackbar={snackbar}
+          setSnackbar={setSnackbar}
         />
-        <AssignTaskModal 
+        <AssignTaskModal
           open={assignTaskOpen}
           setOpen={setAssignTaskOpen}
           style={style}
+          snackbar={snackbar}
+          setSnackbar={setSnackbar}
         />
+        {!!snackbar && (
+          <Snackbar
+            open
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            onClose={handleCloseSnackbar}
+            autoHideDuration={6000}
+          >
+            <Alert {...snackbar} onClose={handleCloseSnackbar} />
+          </Snackbar>
+        )}
       </div>
     </div>
   );
 }
 
-// this allows us to use <App /> in index.js
 export default UserPage;

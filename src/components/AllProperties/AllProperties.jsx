@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import useReduxStore from '../../hooks/useReduxStore';
-import { Snackbar, Alert, useScrollTrigger } from '@mui/material';
+import { Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 import DeleteProperty from '../DeleteProperty/DeleteProperty';
 import { useDispatch } from 'react-redux';
@@ -201,6 +201,13 @@ export default function AllProperties() {
                         toolbar: { setRows, setRowModesModel },
                     }}
                 />
+                <DeleteProperty
+                    open={open}
+                    setOpen={setOpen}
+                    propertyId={deleteId}
+                    snackbar={snackbar}
+                    setSnackbar={setSnackbar}
+                />
                 {!!snackbar && (
                     <Snackbar
                         open
@@ -210,12 +217,7 @@ export default function AllProperties() {
                     >
                         <Alert {...snackbar} onClose={handleCloseSnackbar} />
                     </Snackbar>
-                )}
-                <DeleteProperty
-                    open={open}
-                    setOpen={setOpen}
-                    propertyId={deleteId}
-                />
+                )}                
             </Box>
         </div>
     );

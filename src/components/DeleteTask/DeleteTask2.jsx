@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
-export default function DeleteTask2({ open, setOpen, rows, setRows, taskId, id }) {
+export default function DeleteTask2({ open, setOpen, rows, setRows, id, snackbar, setSnackbar }) {
     const dispatch = useDispatch();
 
     const deleteItem = () => {
@@ -16,9 +16,10 @@ export default function DeleteTask2({ open, setOpen, rows, setRows, taskId, id }
             console.log(response);
             setRows(rows.filter((row) => row.id !== id));
             handleClose();
+            setSnackbar({ children: 'Task successfully deleted', severity: 'success' });
         }).catch(error => {
             console.log(`Error deleting property task:`, error);
-            alert('Something went wrong.');
+            setSnackbar({ children: error.message, severity: 'error' });
         });
     }
 

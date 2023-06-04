@@ -3,7 +3,7 @@ import { Modal, Typography, Box, TextField, Button, FormLabel } from '@mui/mater
 import axios from "axios";
 import { useState } from "react";
 
-function NewPropertyModal({ open, setOpen, style }) {
+function NewPropertyModal({ open, setOpen, style, snackbar, setSnackbar }) {
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('')
     const [state, setState] = useState('');
@@ -28,9 +28,10 @@ function NewPropertyModal({ open, setOpen, style }) {
         axios.post('/api/properties', propertyObject).then(response => {
             console.log('posting new property');
             handleClose();
+            setSnackbar({ children: 'Property successfully created', severity: 'success' });
         }).catch(error => {
             console.log(`Error adding property: ${error}`);
-            alert('Something went wrong.');
+            setSnackbar({ children: error.message, severity: 'error' });
         });
     }
 

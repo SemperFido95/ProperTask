@@ -3,7 +3,8 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.post('/', (req, res) => {
+// Create new task
+router.post('/', rejectUnauthenticated, (req, res) => {
     console.log('in get request for /api/tasks')
     const queryText = `
         INSERT INTO tasks (user_id, task)
@@ -17,7 +18,8 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+// Update task
+router.put('/:id', rejectUnauthenticated, (req, res) => {
     console.log('in put request for /api/tasks');
     const queryText = `UPDATE tasks SET task = $1 WHERE id = $2;`;
     pool.query(queryText, [req.body.task, req.body.id])
@@ -29,18 +31,20 @@ router.put('/:id', (req, res) => {
         });
 });
 
-
+// Delete Task
 router.delete('/:id', rejectUnauthenticated, async (req, res) => {
     console.log('in delete request for /api/tasks');
     const db = await pool.connect();
 
     try {
         await db.query('BEGIN');
+        // First, delete all tasks that been assigned in property_tasks table
         let queryText = `
             DELETE FROM property_tasks
             WHERE task_id = $1;
         `;
         let result = await db.query(queryText, [req.params.id]);
+        // Second, delete task from tasks table
         queryText = `
             DELETE FROM tasks
             WHERE id = $1;

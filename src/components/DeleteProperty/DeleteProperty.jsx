@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
-export default function DeleteProperty({ open, setOpen, propertyId }) {
+export default function DeleteProperty({ open, setOpen, propertyId, Snackbar, setSnackbar }) {
     const dispatch = useDispatch();
 
     const deleteItem = () => {
@@ -17,9 +17,10 @@ export default function DeleteProperty({ open, setOpen, propertyId }) {
             console.log(response);
             dispatch({ type: 'FETCH_PROPERTY_TASKS' });
             handleClose();
+            setSnackbar({ children: 'Property successfully deleted', severity: 'success' });
         }).catch(error => {
             console.log(`Error deleting property:`, error);
-            alert('Something went wrong.');
+            setSnackbar({ children: error.message, severity: 'error' });
         });
     }
 
