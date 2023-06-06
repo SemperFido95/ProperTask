@@ -19,6 +19,7 @@ function NewTaskModal({ open, setOpen, style, snackbar, setSnackbar }) {
         axios.post('/api/tasks', { task }).then(response => {
             console.log(response);
             setSnackbar({ children: 'Task successfully created', severity: 'success' });
+            document.getElementById('new-task').value = '';
         }).catch(error => {
             console.log(`Error adding task: ${error}`);
             setSnackbar({ children: error.message, severity: 'error' });
@@ -49,7 +50,7 @@ function NewTaskModal({ open, setOpen, style, snackbar, setSnackbar }) {
                 >
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <TextField
-                            id="outlined-success"
+                            id="new-task"
                             label="Task"
                             onChange={event => setTask(event.target.value)}
                             size="small"

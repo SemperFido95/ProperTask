@@ -27,6 +27,7 @@ function AssignTaskModal({ open, setOpen, style, snackbar, setSnackbar }) {
         axios.post(`/api/property-tasks`, { task: task, id: property }).then(response => {
             console.log(response);
             setSnackbar({ children: 'Task assigned', severity: 'success' });
+            
         }).catch(error => {
             console.log(`Error assigning task: ${error}`);
             setSnackbar({ children: error.message, severity: 'error' });

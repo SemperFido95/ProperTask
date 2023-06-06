@@ -27,7 +27,10 @@ function NewPropertyModal({ open, setOpen, style, snackbar, setSnackbar }) {
 
         axios.post('/api/properties', propertyObject).then(response => {
             console.log('posting new property');
-            handleClose();
+            document.getElementById('new-street').value = '';
+            document.getElementById('new-city').value = '';
+            document.getElementById('new-state').value = '';
+            document.getElementById('new-zip').value = '';
             setSnackbar({ children: 'Property successfully created', severity: 'success' });
         }).catch(error => {
             console.log(`Error adding property: ${error}`);
@@ -60,25 +63,25 @@ function NewPropertyModal({ open, setOpen, style, snackbar, setSnackbar }) {
                 >
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <TextField
-                            id="outlined-success"
+                            id="new-street"
                             label="Street"
                             onChange={event => setStreet(event.target.value)}
                             size="small"
                         />
                         <TextField
-                            id="outlined-success"
+                            id="new-city"
                             label="City"
                             onChange={event => setCity(event.target.value)}
                             size="small"
                         />
                         <TextField
-                            id="outlined-success"
+                            id="new-state"
                             label="State"
                             onChange={event => setState(event.target.value)}
                             size="small"
                         />
                         <TextField
-                            id="outlined-success"
+                            id="new-zip"
                             label="Zip"
                             onChange={event => setZip(event.target.value)}
                             size="small"
