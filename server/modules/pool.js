@@ -1,35 +1,52 @@
+/**
+* You'll need to use environment variables in order to deploy your
+* pg-pool configuration to Heroku.
+* It will look something like this:
+**/
 /* the only line you likely need to change is
-
  database: 'prime_app',
-
  change `prime_app` to the name of your database, and you should be all set!
 */
 
 const pg = require('pg');
-let pool;
+const url = require('url');
 
-// When our app is deployed to the internet 
-// we'll use the DATABASE_URL environment variable
-// to set the connection info: web address, username/password, db name
-// eg: 
-//  DATABASE_URL=postgresql://jDoe354:secretPw123@some.db.com/prime_app
+let config = {};
+
+// We need a different pg configuration if we're running
+// on Heroku, vs if we're running locally.
+//
+// Heroku gives us a process.env.DATABASE_URL variable,
+// so if that's set, we know we're on heroku.
 if (process.env.DATABASE_URL) {
-    pool = new pg.Pool({
+    config = {
+        // We use the DATABASE_URL from Heroku to connect to our DB
         connectionString: process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-        }
-    });
-}
-// When we're running this app on our own computer
-// we'll connect to the postgres database that is 
-// also running on our computer (localhost)
-else {
-    pool = new pg.Pool({
+        // Heroku also requires this special `ssl` config
+        ssl: { rejectUnauthorized: false },
+    };
+} else {
+    // If we're not on heroku, configure PG to use our local database
+    config = {
         host: 'localhost',
         port: 5432,
-        database: 'propertask',   // 	💥 Change this to the name of your database!
-    });
+        database: 'propertask', // CHANGE THIS LINE to match your local database name!
+    };
 }
+
+// this creates the pool that will be shared by all other modules
+const pool = new pg.Pool(config);
+
+// the pool will log when it connects to the database
+pool.on('connect', () => {
+    console.log('Postgesql connected');
+});
+
+// the pool with emit an error on behalf of any idle clients
+// it contains if a backend error or network partition happens
+pool.on('error', (err) => {
+    console.log('Unexpected error on idle client', err);
+    process.exit(-1);
+});
 
 module.exports = pool;
